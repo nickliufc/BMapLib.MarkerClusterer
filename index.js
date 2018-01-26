@@ -1302,7 +1302,9 @@ MarkerClusterer.prototype._removeMarkersFromCluster = function(){
 MarkerClusterer.prototype._removeMarkersFromMap = function(){
     for(var i = 0, marker; marker = this._markers[i]; i++){
         marker.isInCluster = false;
-        this._map.removeOverlay(marker);       
+		var tmplabel = marker.getLabel();  
+		this._map.removeOverlay(marker);         
+		marker.setLabel(tmplabel);      
     }
 };
 
@@ -1317,7 +1319,9 @@ MarkerClusterer.prototype._removeMarker = function(marker) {
     if (index === -1) {
         return false;
     }
-    this._map.removeOverlay(marker);
+	var tmplabel = marker.getLabel();  
+	this._map.removeOverlay(marker);  
+	marker.setLabel(tmplabel);  
     this._markers.splice(index, 1);
     return true;
 };
@@ -1538,7 +1542,9 @@ Cluster.prototype.addMarker = function(marker){
         return true;
     } else if (len === this._minClusterSize) {
         for (var i = 0; i < len; i++) {
-            this._markers[i].getMap() && this._map.removeOverlay(this._markers[i]);
+			var tmplabel = this._markers[i].getLabel();  
+			this._markers[i].getMap() && this._map.removeOverlay(this._markers[i]);  
+			this._markers[i].setLabel(tmplabel); 
         }
         
     } 
@@ -1624,9 +1630,9 @@ Cluster.prototype.updateClusterMarker = function () {
  */
 Cluster.prototype.remove = function(){
     for (var i = 0, m; m = this._markers[i]; i++) {
-        var label = this._markers[i].getLabel();
-        this._markers[i].getMap() && this._map.removeOverlay(this._markers[i]);
-        this._markers[i].setLabel(label);
+		var tmplabel = this._markers[i].getLabel();  
+		this._markers[i].getMap() && this._map.removeOverlay(this._markers[i]);  
+		this._markers[i].setLabel(tmplabel); 
     }//清除散的标记点
     this._map.removeOverlay(this._clusterMarker);
     this._markers.length = 0;
